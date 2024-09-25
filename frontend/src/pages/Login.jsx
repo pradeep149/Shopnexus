@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { assets } from "../assets/assets";
 import { FaEye } from "react-icons/fa6";
 import { FaEyeSlash } from "react-icons/fa6";
@@ -6,8 +6,10 @@ import "../styles/Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { ShopContext } from "../context/ShopContext";
 
 const Login = () => {
+  const [backendUrl] = useContext(ShopContext);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   console.log("speeed");
@@ -24,7 +26,7 @@ const Login = () => {
       };
       try {
         const response = await axios.post(
-          "http://localhost:4000/api/v1/login",
+          backendUrl + "api/v1/login",
           formData
         );
         localStorage.setItem("auth", JSON.stringify(response.data.token));
@@ -93,8 +95,7 @@ const Login = () => {
               <button
                 id="google-signin"
                 onClick={() => {
-                  window.location.href =
-                    "http://localhost:4000/api/v1/auth/google";
+                  window.location.href = backendUrl + "/api/v1/auth/google";
                 }}
               >
                 <img src={assets.GoogleSvg} alt="" />

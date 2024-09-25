@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { assets } from "../assets/assets";
 import { FaEye } from "react-icons/fa6";
 import { FaEyeSlash } from "react-icons/fa6";
@@ -6,10 +6,12 @@ import "../styles/Register.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { ShopContext } from "../context/ShopContext";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const [backendUrl] = useContext(ShopContext);
   const [token, setToken] = useState(
     JSON.parse(localStorage.getItem("auth")) || ""
   );
@@ -38,7 +40,7 @@ const Register = () => {
         };
         try {
           const response = await axios.post(
-            "http://localhost:4000/api/v1/register",
+            backendUrl + "/api/v1/register",
             formData
           );
           toast.success("Registration successfull");
@@ -142,8 +144,7 @@ const Register = () => {
               <button
                 id="google-signup"
                 onClick={() => {
-                  window.location.href =
-                    "http://localhost:4000/api/v1/auth/google";
+                  window.location.href = backendUrl + "/api/v1/auth/google";
                 }}
               >
                 <img src={assets.GoogleSvg} alt="" />
