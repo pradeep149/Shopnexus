@@ -44,7 +44,7 @@ app.get(
 app.get(
   "/api/v1/auth/google/home",
   passport.authenticate("google", {
-    failureRedirect: `http://localhost:5173/login`,
+    failureRedirect: `${process.env.FRONTEND_URL}/login`,
     session: false,
   }),
   (req, res) => {
@@ -53,7 +53,7 @@ app.get(
       process.env.JWT_SECRET,
       { expiresIn: "30d" }
     );
-    res.redirect(`http://localhost:5173/home?token=${token}`);
+    res.redirect(`${process.env.FRONTEND_URL}/home?token=${token}`);
   }
 );
 
