@@ -1,4 +1,4 @@
-import wishlistModel from "../models/wishListModel.js";
+import wishlistModel from "../models/wishlistModel.js";
 
 // Get all wishlist items for a user
 const getWishlistItems = async (req, res) => {
