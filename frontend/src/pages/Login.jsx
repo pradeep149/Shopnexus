@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import { ShopContext } from "../context/ShopContext";
 
 const Login = () => {
-  const [backendUrl] = useContext(ShopContext);
+  const { backendUrl } = useContext(ShopContext);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   console.log("speeed");

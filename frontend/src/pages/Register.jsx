@@ -11,7 +11,7 @@ import { ShopContext } from "../context/ShopContext";
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const [backendUrl] = useContext(ShopContext);
+  const { backendUrl } = useContext(ShopContext);
   const [token, setToken] = useState(
     JSON.parse(localStorage.getItem("auth")) || ""
   );
