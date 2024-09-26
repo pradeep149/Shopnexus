@@ -36,6 +36,11 @@ app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/wishlist", wishlistRouter);
 
+app.use(express.static(path.join(__dirname, "dist")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
+
 app.get(
   "/api/v1/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
