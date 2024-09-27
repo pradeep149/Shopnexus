@@ -189,7 +189,7 @@ const Collection = () => {
                 value={priceRange}
                 onChange={handlePriceChange}
                 valueLabelDisplay="auto"
-                min={100}
+                min={0}
                 max={20000}
                 step={100}
               />
