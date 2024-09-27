@@ -39,6 +39,21 @@ const Footer = () => {
                 <p>Contact Us</p>
               </Link>
             </li>
+            <li>
+              <Link to="/termsandconditions">
+                <p>Terms and Conditions</p>
+              </Link>
+            </li>
+            <li>
+              <Link to="/cancellation-refund">
+                <p>Cancellation and Refund</p>
+              </Link>
+            </li>
+            <li>
+              <Link to="/shipping-delivery">
+                <p>Shipping and Delivery</p>
+              </Link>
+            </li>
           </ul>
         </div>
 

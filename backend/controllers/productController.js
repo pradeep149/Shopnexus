@@ -66,9 +66,6 @@ const listProducts = async (req, res) => {
 };
 
 const editProduct = async (req, res) => {
-  console.log(
-    "it came hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
-  );
   try {
     const { id, name, description, price, category, subCategory } = req.body;
 

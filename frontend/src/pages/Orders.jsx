@@ -4,9 +4,10 @@ import Title from "../components/Title";
 import axios from "axios";
 
 const Orders = () => {
-  const { backendUrl, token, currency } = useContext(ShopContext);
+  const { backendUrl, currency } = useContext(ShopContext);
 
   const [orderData, setorderData] = useState([]);
+  const token = JSON.parse(localStorage.getItem("auth"));
 
   const loadOrderData = async () => {
     try {
@@ -19,6 +20,8 @@ const Orders = () => {
         {},
         { headers: { token } }
       );
+      console.log(response);
+
       if (response.data.success) {
         let allOrdersItem = [];
         response.data.orders.map((order) => {

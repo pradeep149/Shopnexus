@@ -1,83 +1,75 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
-import { Link } from "react-router-dom";
-import { FaTrash } from "react-icons/fa";
-import axios from "axios";
+import Title from "../components/Title";
+import { assets } from "../assets/assets";
 
 const Wishlist = () => {
-  const { token, currency, backendUrl } = useContext(ShopContext);
-  const [wishlistProducts, setWishlistProducts] = useState([]);
+  const {
+    products,
+    currency,
+    wishlistItems,
+    updateQuantity,
+    removeFromWishlist,
+  } = useContext(ShopContext);
+
+  const [wishlistData, setWishlistData] = useState([]);
 
   useEffect(() => {
-    const fetchWishlistItems = async () => {
-      try {
-        const response = await axios.get(`${backendUrl}/api/wishlist`, {
-          headers: { token },
-        });
-        if (response.data.success) {
-          setWishlistProducts(response.data.wishlistProducts);
-        }
-      } catch (error) {
-        console.error("Error fetching wishlist items:", error);
-      }
-    };
-
-    if (token) {
-      fetchWishlistItems();
+    if (products.length > 0) {
+      setWishlistData(wishlistItems);
     }
-  }, [token, backendUrl]);
-
-  const handleRemoveFromWishlist = async (productId) => {
-    try {
-      await axios.post(
-        `${backendUrl}/api/wishlist/remove`,
-        { productId },
-        { headers: { token } }
-      );
-      setWishlistProducts((prev) =>
-        prev.filter((product) => product._id !== productId)
-      );
-    } catch (error) {
-      console.error("Error removing product from wishlist:", error);
-    }
-  };
+  }, [wishlistItems, products]);
+  console.log(wishlistData);
 
   return (
-    <div className="p-5">
-      <h2 className="text-2xl font-bold mb-5">My Wishlist</h2>
-      {wishlistProducts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-          {wishlistProducts.map((product) => (
-            <div key={product._id} className="border p-3 rounded">
-              <img
-                src={product.image[0]}
-                alt={product.name}
-                className="w-full h-auto mb-2"
-              />
-              <h3 className="font-bold">{product.name}</h3>
-              <p>
-                {currency}
-                {product.price}
-              </p>
-              <div className="flex justify-between mt-3">
-                <Link
-                  to={`/product/${product._id}`}
-                  className="bg-blue-500 text-white px-3 py-1 rounded"
-                >
-                  View Product
-                </Link>
-                <button
-                  onClick={() => handleRemoveFromWishlist(product._id)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  <FaTrash />
-                </button>
+    <div className="border-t pt-14">
+      <div className="text-2xl mb-3">
+        <Title text1={"YOUR"} text2={"WISHLIST"} />
+      </div>
+
+      {wishlistData ? (
+        <div>
+          {wishlistData.map((item, index) => {
+            const productData = products.find((product) => product._id == item);
+            console.log(productData);
+
+            return (
+              <div
+                key={index}
+                className="py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4"
+              >
+                <div className="flex items-start gap-6">
+                  <img
+                    className="w-16 sm:w-20"
+                    src={productData.image[0]}
+                    alt=""
+                  />
+                  <div>
+                    <p className="text-xs sm:text-lg font-medium">
+                      {productData.name}
+                    </p>
+                    <div className="flex items-center gap-5 mt-2">
+                      <p>
+                        {currency}
+                        {productData.price}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <img
+                  onClick={() => removeFromWishlist(item)}
+                  className="w-4 mr-4 sm:w-5 cursor-pointer"
+                  src={assets.bin_icon}
+                  alt=""
+                />
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : (
-        <p>Your wishlist is empty.</p>
+        <div className="text-center py-12">
+          <p>Your wishlist is empty</p>
+        </div>
       )}
     </div>
   );

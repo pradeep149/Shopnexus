@@ -88,7 +88,7 @@ const Product = () => {
             </button>
 
             <button
-              onClick={() => addToWishlist(productData._id, size)}
+              onClick={() => addToWishlist(productData._id)}
               className="bg-[#3FA2F6] text-white px-8 py-3 text-sm active:bg-gray-700 hover:bg-[#0F67B1] duration-400 rounded"
             >
               ADD TO WISHLIST

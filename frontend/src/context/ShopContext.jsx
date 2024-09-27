@@ -12,9 +12,9 @@ const ShopContextProvider = (props) => {
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(true);
   const [cartItems, setCartItems] = useState({});
+  const [wishlistItems, setWishlistItems] = useState([]);
   const [products, setProducts] = useState([]);
   const [token, setToken] = useState("");
-  const [wishlistItems, setWishlistItems] = useState([]);
   const navigate = useNavigate();
 
   const addToCart = async (itemId, size) => {
@@ -53,21 +53,45 @@ const ShopContextProvider = (props) => {
   };
 
   const addToWishlist = async (itemId) => {
-    if (token) {
-      try {
-        await axios.post(
-          `${backendUrl}/api/wishlist/toggle`,
-          { itemId },
-          { headers: { token } }
-        );
-        toast.success("Wishlist updated");
-      } catch (error) {
-        toast.error("Error updating wishlist");
-        console.error(error);
+    if (!wishlistItems.some((item) => item._id === itemId)) {
+      const newWishlistItem = { _id: itemId };
+      setWishlistItems((prevItems) => [...prevItems, newWishlistItem]);
+      if (token) {
+        try {
+          await axios.post(
+            backendUrl + "/api/wishlist/add",
+            { itemId },
+            { headers: { token } }
+          );
+          toast.success("Item added to wishlist");
+          getUserWishlist(token);
+        } catch (error) {
+          console.log(error);
+          toast.error(error.message);
+        }
       }
     } else {
-      toast.error("Please login to add to wishlist");
-      navigate("/login");
+      toast.warn("Item already exists in wishlist");
+    }
+  };
+
+  const removeFromWishlist = async (itemId) => {
+    try {
+      const response = await axios.post(
+        backendUrl + "/api/wishlist/remove",
+        { id: itemId },
+        { headers: { token } }
+      );
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        await getUserWishlist(token);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
     }
   };
 
@@ -157,11 +181,46 @@ const ShopContextProvider = (props) => {
 
   useEffect(() => {
     if (!token && localStorage.getItem("token")) {
+      console.log(localStorage.getItem("token"));
+
       setToken(localStorage.getItem("token"));
       getUserCart(localStorage.getItem("token"));
     }
     if (token) {
+      console.log("token", token);
       getUserCart(token);
+    }
+  }, [token]);
+
+  const getUserWishlist = async (token) => {
+    try {
+      const response = await axios.post(
+        backendUrl + "/api/wishlist/get",
+        {},
+        { headers: { token } }
+      );
+
+      if (response.data.success) {
+        console.log(response.data.wishlistData);
+        setWishlistItems(response.data.wishlistData);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getProductsData();
+  }, []);
+
+  useEffect(() => {
+    if (!token && localStorage.getItem("auth")) {
+      setToken(JSON.parse(localStorage.getItem("auth")));
+      getUserWishlist(JSON.parse(localStorage.getItem("auth")));
+    }
+    if (token) {
+      getUserWishlist(token);
     }
   }, [token]);
 
@@ -173,6 +232,7 @@ const ShopContextProvider = (props) => {
     setSearch,
     showSearch,
     addToWishlist,
+    removeFromWishlist,
     setShowSearch,
     cartItems,
     addToCart,
@@ -181,6 +241,8 @@ const ShopContextProvider = (props) => {
     updateQuantity,
     getCartAmount,
     navigate,
+    wishlistItems,
+    setWishlistItems,
     backendUrl,
     setToken,
     token,

@@ -18,6 +18,9 @@ import Wishlist from "./pages/Wishlist";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Verify from "./pages/Verify";
+import TermsandConditions from "./components/TermsAndConditions";
+import CancellationAndRefund from "./components/CancellationAndRefund";
+import ShippingAndDelivery from "./components/ShippingAndDelivery";
 
 const App = () => {
   return (
@@ -39,6 +42,12 @@ const App = () => {
         <Route path="/verify" element={<Verify />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/termsandconditions" element={<TermsandConditions />} />
+        <Route
+          path="/cancellation-refund"
+          element={<CancellationAndRefund />}
+        />
+        <Route path="/shipping-delivery" element={<ShippingAndDelivery />} />
       </Routes>
       <Footer />
     </div>
