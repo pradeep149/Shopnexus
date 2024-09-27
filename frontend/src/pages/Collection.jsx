@@ -13,7 +13,7 @@ const Collection = () => {
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const [sortType, setSortType] = useState("relavent");
-  const [priceRange, setPriceRange] = useState([100, 20000]);
+  const [priceRange, setPriceRange] = useState([0, 20000]);
 
   const toggleCategory = (e) => {
     if (category.includes(e.target.value)) {
