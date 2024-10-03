@@ -26,12 +26,16 @@ const Login = () => {
       };
       try {
         const response = await axios.post(
-          backendUrl + "api/v1/login",
+          backendUrl + "/api/user/login",
           formData
         );
-        localStorage.setItem("auth", JSON.stringify(response.data.token));
-        toast.success("Login successful");
-        navigate("/");
+        if (response.data.success) {
+          localStorage.setItem("auth", JSON.stringify(response.data.token));
+          toast.success("Login successful");
+          navigate("/");
+        } else {
+          toast.error("Invalid credentials");
+        }
       } catch (err) {
         console.log(err);
         toast.error(err.message);

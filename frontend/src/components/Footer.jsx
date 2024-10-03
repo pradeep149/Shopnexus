@@ -20,37 +20,37 @@ const Footer = () => {
           <p className="text-xl font-medium mb-5">COMPANY</p>
           <ul className="flex flex-col gap-1 text-gray-600">
             <li>
-              <Link to="/">
+              <Link onClick={scrollTo(0, 0)} to="/">
                 <p>Home</p>
               </Link>
             </li>
             <li>
-              <Link to="/about">
+              <Link onClick={scrollTo(0, 0)} to="/about">
                 <p>About Us</p>
               </Link>
             </li>
             <li>
-              <Link to="/privacy-policy">
+              <Link to="/privacy-policy" onClick={scrollTo(0, 0)}>
                 <p>Privacy policy</p>
               </Link>
             </li>
             <li>
-              <Link to="/contact">
+              <Link to="/contact" onClick={scrollTo(0, 0)}>
                 <p>Contact Us</p>
               </Link>
             </li>
             <li>
-              <Link to="/termsandconditions">
+              <Link to="/termsandconditions" onClick={scrollTo(0, 0)}>
                 <p>Terms and Conditions</p>
               </Link>
             </li>
             <li>
-              <Link to="/cancellation-refund">
+              <Link to="/cancellation-refund" onClick={scrollTo(0, 0)}>
                 <p>Cancellation and Refund</p>
               </Link>
             </li>
             <li>
-              <Link to="/shipping-delivery">
+              <Link to="/shipping-delivery" onClick={scrollTo(0, 0)}>
                 <p>Shipping and Delivery</p>
               </Link>
             </li>

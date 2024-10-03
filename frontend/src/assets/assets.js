@@ -75,6 +75,7 @@ import cross_icon from "./cross_icon.png";
 import bgtest from "./bgtest.png";
 import GoogleSvg from "./icons8-google.svg";
 import registerbg from "./registerbg.png";
+import scareCrow from "./scareCrow.png";
 
 export const assets = {
   bgtest,
@@ -82,6 +83,7 @@ export const assets = {
   GoogleSvg,
   logo,
   hero_img,
+  scareCrow,
   cart_icon,
   dropdown_icon,
   exchange_icon,

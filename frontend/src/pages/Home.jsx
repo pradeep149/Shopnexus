@@ -3,7 +3,6 @@ import Hero from "../components/Hero";
 import LatestCollection from "../components/LatestCollection";
 import BestSeller from "../components/BestSeller";
 import OurPolicy from "../components/OurPolicy";
-import NewsletterBox from "../components/NewsletterBox";
 import { useNavigate } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import { toast } from "react-toastify";
@@ -34,13 +33,6 @@ const Home = () => {
     //   }
     // }
   }, [navigate]);
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  useEffect(() => {
-    const tokenn = JSON.parse(localStorage.getItem("auth"));
-    setToken(tokenn || "");
-    setIsLoggedIn(!!tokenn);
-  });
 
   return (
     <div>

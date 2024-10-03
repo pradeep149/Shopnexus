@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
 import Title from "../components/Title";
 import { assets } from "../assets/assets";
+import { Link } from "react-router-dom";
 
 const Wishlist = () => {
   const {
@@ -10,9 +11,12 @@ const Wishlist = () => {
     wishlistItems,
     updateQuantity,
     removeFromWishlist,
+    addToCart,
+    navigate,
   } = useContext(ShopContext);
 
   const [wishlistData, setWishlistData] = useState([]);
+  const [size, setSize] = useState("");
 
   useEffect(() => {
     if (products.length > 0) {
@@ -36,14 +40,21 @@ const Wishlist = () => {
             return (
               <div
                 key={index}
-                className="py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4"
+                className="py-4 border-t border-b text-gray-700 flex justify-between items-center gap-4"
               >
                 <div className="flex items-start gap-6">
-                  <img
-                    className="w-16 sm:w-20"
-                    src={productData.image[0]}
-                    alt=""
-                  />
+                  <Link
+                    onClick={() => scrollTo(0, 0)}
+                    className="text-gray-700 cursor-pointer"
+                    to={`/product/${productData._id}`}
+                  >
+                    <img
+                      className="w-16 sm:w-20 hover:scale-110 transition ease-in-out"
+                      src={productData.image[0]}
+                      alt=""
+                    />
+                  </Link>
+
                   <div>
                     <p className="text-xs sm:text-lg font-medium">
                       {productData.name}
@@ -56,12 +67,40 @@ const Wishlist = () => {
                     </div>
                   </div>
                 </div>
-                <img
-                  onClick={() => removeFromWishlist(item)}
-                  className="w-4 mr-4 sm:w-5 cursor-pointer"
-                  src={assets.bin_icon}
-                  alt=""
-                />
+
+                <div className="flex flex-col gap-4 my-8">
+                  <p>Select Size</p>
+                  <div className="flex gap-2">
+                    {productData.sizes.map((item, index) => (
+                      <button
+                        onClick={() => setSize(item)}
+                        className={`border py-2 px-4 bg-gray-100 ${
+                          item === size ? "border-orange-500" : ""
+                        }`}
+                        key={index}
+                      >
+                        {item}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex justify-between gap-10 items-center">
+                  <button
+                    onClick={() => {
+                      addToCart(productData._id, size);
+                    }}
+                    className="bg-[#6EC207] text-white px-6 py-2 text-sm active:bg-gray-700 hover:bg-[#117554] hover:text-base duration-400 rounded"
+                  >
+                    ADD TO CART
+                  </button>
+
+                  <img
+                    onClick={() => removeFromWishlist(item)}
+                    className="w-4 mr-4 sm:w-5 cursor-pointer hover:w-6"
+                    src={assets.bin_icon}
+                    alt=""
+                  />
+                </div>
               </div>
             );
           })}

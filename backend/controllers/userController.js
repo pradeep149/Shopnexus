@@ -3,73 +3,56 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import userModel from "../models/userModel.js";
 
-const createToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET);
-};
-
 const loginUser = async (req, res) => {
-  try {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
 
-    const user = await userModel.findOne({ email });
+  if (!email || !password) {
+    return res.status(400).json({
+      msg: "Bad request. Please add email and password in the request body",
+    });
+  }
 
-    if (!user) {
-      return res.json({ success: false, message: "User doesn't exists" });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
+  let foundUser = await userModel.findOne({ email: req.body.email });
+  if (foundUser) {
+    const isMatch = await foundUser.comparePassword(password);
 
     if (isMatch) {
-      const token = createToken(user._id);
-      res.json({ success: true, token });
+      const token = jwt.sign(
+        { id: foundUser._id, name: foundUser.name },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "30d",
+        }
+      );
+
+      return res.status(200).json({ msg: "user logged in", token });
     } else {
-      res.json({ success: false, message: "Invalid credentials" });
+      return res.status(400).json({ msg: "Bad password" });
     }
-  } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error.message });
+  } else {
+    return res.status(400).json({ msg: "Bad credentails" });
   }
 };
 
 const registerUser = async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
-
-    const exists = await userModel.findOne({ email });
-    if (exists) {
-      return res.json({ success: false, message: "User already exists" });
-    }
-
-    if (!validator.isEmail(email)) {
-      return res.json({
-        success: false,
-        message: "Please enter a valid email",
+  let foundUser = await userModel.findOne({ email: req.body.email });
+  if (foundUser === null) {
+    let { username, email, password } = req.body;
+    if (username.length && email.length && password.length) {
+      const person = new userModel({
+        name: username,
+        email: email,
+        password: password,
       });
+      await person.save();
+      return res.status(201).json({ person });
+    } else {
+      return res
+        .status(400)
+        .json({ msg: "Please add all values in the request body" });
     }
-    if (password.length < 8) {
-      return res.json({
-        success: false,
-        message: "Please enter a strong password",
-      });
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const newUser = new userModel({
-      name,
-      email,
-      password: hashedPassword,
-    });
-
-    const user = await newUser.save();
-
-    const token = createToken(user._id);
-
-    res.json({ success: true, token });
-  } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error.message });
+  } else {
+    return res.status(400).json({ msg: "Email already in use" });
   }
 };
 

@@ -21,6 +21,7 @@ import Verify from "./pages/Verify";
 import TermsandConditions from "./components/TermsAndConditions";
 import CancellationAndRefund from "./components/CancellationAndRefund";
 import ShippingAndDelivery from "./components/ShippingAndDelivery";
+import NotFoundPage from "./pages/404";
 
 const App = () => {
   return (
@@ -48,6 +49,7 @@ const App = () => {
           element={<CancellationAndRefund />}
         />
         <Route path="/shipping-delivery" element={<ShippingAndDelivery />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
     </div>

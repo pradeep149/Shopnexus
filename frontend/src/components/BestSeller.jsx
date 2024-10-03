@@ -11,8 +11,8 @@ const BestSeller = () => {
   const [bestSeller, setBestSeller] = useState([]);
 
   useEffect(() => {
-    const bestProduct = products.filter((item) => item.bestseller);
-    setBestSeller(bestProduct.slice(0, 15));
+    const shuffledProducts = [...products].sort(() => 0.5 - Math.random());
+    setBestSeller(shuffledProducts.slice(0, 15));
   }, [products]);
 
   const settings = {
@@ -20,23 +20,23 @@ const BestSeller = () => {
     infinite: true,
     speed: 500,
     slidesToShow: 5,
-    slidesToScroll: 1,
+    slidesToScroll: 3,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 3500,
     swipeToSlide: true,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
           slidesToShow: 4,
-          slidesToScroll: 1,
+          slidesToScroll: 3,
         },
       },
       {
         breakpoint: 768,
         settings: {
           slidesToShow: 3,
-          slidesToScroll: 1,
+          slidesToScroll: 2,
         },
       },
       {

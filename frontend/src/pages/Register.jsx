@@ -40,7 +40,7 @@ const Register = () => {
         };
         try {
           const response = await axios.post(
-            backendUrl + "/api/v1/register",
+            backendUrl + "/api/user/register",
             formData
           );
           toast.success("Registration successfull");
